@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration LTG - Panel de Gestion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .serif-title { font-family: 'Playfair Display', serif; }
+        .sans-text { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 sans-text">
+    <!-- Header Admin -->
+    <header class="bg-black text-white py-4 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">LTG</span>
+                </div>
+                <h1 class="serif-title text-2xl font-black">Panel d'Administration</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="admin-user" class="text-sm text-gray-300">Administrateur</span>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-sm font-medium transition">
+                    Déconnexion
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-lg shadow-sm mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button onclick="showTab('articles')" class="tab-btn py-4 px-1 border-b-2 border-red-500 font-medium text-red-600" data-tab="articles">
+                        Articles
+                    </button>
+                    <button onclick="showTab('formations')" class="tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="formations">
+                        Formations
+                    </button>
+                    <button onclick="showTab('actualites')" class="tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="actualites">
+                        Actualités
+                    </button>
+                    <button onclick="showTab('settings')" class="tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="settings">
+                        Paramètres
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Articles Tab -->
+        <div id="articles-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">Gestion des Articles</h2>
+                    <button onclick="openArticleModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        + Nouvel Article
+                    </button>
+                </div>
+                
+                <!-- Articles List -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auteur</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photos</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-list" class="bg-white divide-y divide-gray-200">
+                            <!-- Articles will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formations Tab -->
+        <div id="formations-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">Gestion des Formations</h2>
+                    <button onclick="openFormationModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        + Nouvelle Formation
+                    </button>
+                </div>
+                
+                <!-- Formations Grid -->
+                <div id="formations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Formations will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Actualités Tab -->
+        <div id="actualites-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">Gestion des Actualités</h2>
+                    <button onclick="openActualiteModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        + Nouvelle Actualité
+                    </button>
+                </div>
+                
+                <!-- Actualités List -->
+                <div id="actualites-list" class="space-y-4">
+                    <!-- Actualités will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="serif-title text-2xl font-black mb-6">Paramètres du Site</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Titre du Site</label>
+                        <input type="text" id="site-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="Lycée Technique de Gabode">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email de Contact</label>
+                        <input type="email" id="site-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="ltg@menfop.dj">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                        <input type="tel" id="site-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="+253 21 34 13 26">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
+                        <textarea id="site-address" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">Gabode, 3467 Djibouti</textarea>
+                    </div>
+                    
+                    <button onclick="saveSettings()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        Sauvegarder les Paramètres
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Article Modal -->
+    <div id="article-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="serif-title text-2xl font-black">Éditer l'Article</h3>
+                        <button onclick="closeArticleModal()" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form id="article-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Titre</label>
+                            <input type="text" id="article-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                <input type="date" id="article-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Auteur</label>
+                                <input type="text" id="article-author" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photos (URLs séparées par des virgules)</label>
+                            <textarea id="article-images" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="image1.jpg, image2.jpg, image3.jpg"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contenu (HTML)</label>
+                            <textarea id="article-content" rows="10" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="closeArticleModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formation Modal -->
+    <div id="formation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="serif-title text-2xl font-black">Éditer la Formation</h3>
+                        <button onclick="closeFormationModal()" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form id="formation-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nom de la Formation</label>
+                            <input type="text" id="formation-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <textarea id="formation-description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Durée</label>
+                                <input type="text" id="formation-duration" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                                <select id="formation-category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                                    <option value="industriel">Industriel</option>
+                                    <option value="tertiaire">Tertiaire</option>
+                                    <option value="court">Formation courte</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Débouchés (un par ligne)</label>
+                            <textarea id="formation-debouches" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Compétences (séparées par des virgules)</label>
+                            <input type="text" id="formation-competences" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                            <input type="text" id="formation-image" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="closeFormationModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let articles = JSON.parse(localStorage.getItem('ltg_articles') || '[]');
+        let formations = JSON.parse(localStorage.getItem('ltg_formations') || '[]');
+        let actualites = JSON.parse(localStorage.getItem('ltg_actualites') || '[]');
+        let settings = JSON.parse(localStorage.getItem('ltg_settings') || '{}');
+
+        // Initialize default data if empty
+        if (articles.length === 0) {
+            articles = [
+                {
+                    id: 1,
+                    title: 'Évaluations du Bac Professionnel',
+                    date: '2025-12-15',
+                    author: 'Rédaction MENFOP',
+                    images: ['494378819_1287526726708493_7113163948430291751_n.jpg', 'images.jpg', '487824205_1257495029711663_5267834142294165807_n.jpg'],
+                    content: '<h3>Évaluations nationales : Un bilan positif pour le LTG</h3><p>Le Lycée Technique de Gabode a accueilli avec succès les évaluations...</p>'
+                }
+            ];
+            saveData();
+        }
+
+        if (formations.length === 0) {
+            formations = [
+                {
+                    id: 1,
+                    name: 'IRT',
+                    description: 'Information et Réseaux Télécommunication',
+                    duration: '3 ans',
+                    category: 'industriel',
+                    debouches: ['Opérateurs télécoms', 'Administrateurs réseaux'],
+                    competences: ['Réseaux TCP/IP', 'Administration systèmes'],
+                    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600'
+                }
+            ];
+            saveData();
+        }
+
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active state from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-red-500', 'text-red-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            
+            // Add active state to selected button
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-500');
+            activeBtn.classList.add('border-red-500', 'text-red-600');
+            
+            // Load content for the tab
+            if (tabName === 'articles') loadArticles();
+            if (tabName === 'formations') loadFormations();
+            if (tabName === 'actualites') loadActualites();
+            if (tabName === 'settings') loadSettings();
+        }
+
+        // Load Functions
+        function loadArticles() {
+            const tbody = document.getElementById('articles-list');
+            tbody.innerHTML = articles.map(article => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${article.title}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${article.date}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${article.author}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${article.images.length} photos</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="editArticle(${article.id})" class="text-red-600 hover:text-red-900 mr-3">Modifier</button>
+                        <button onclick="deleteArticle(${article.id})" class="text-red-600 hover:text-red-900">Supprimer</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadFormations() {
+            const grid = document.getElementById('formations-grid');
+            grid.innerHTML = formations.map(formation => `
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                    <img src="${formation.image}" alt="${formation.name}" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h4 class="font-bold text-lg mb-2">${formation.name}</h4>
+                    <p class="text-gray-600 text-sm mb-4">${formation.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs bg-${formation.category === 'industriel' ? 'blue' : formation.category === 'tertiaire' ? 'green' : 'purple'}-100 text-${formation.category === 'industriel' ? 'blue' : formation.category === 'tertiaire' ? 'green' : 'purple'}-800 px-2 py-1 rounded-full">
+                            ${formation.category}
+                        </span>
+                        <div class="space-x-2">
+                            <button onclick="editFormation(${formation.id})" class="text-red-600 hover:text-red-900 text-sm">Modifier</button>
+                            <button onclick="deleteFormation(${formation.id})" class="text-red-600 hover:text-red-900 text-sm">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadActualites() {
+            const list = document.getElementById('actualites-list');
+            list.innerHTML = actualites.map(actualite => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">${actualite.title}</h4>
+                            <p class="text-gray-600 text-sm mb-2">${actualite.description}</p>
+                            <span class="text-xs text-gray-500">${actualite.date}</span>
+                        </div>
+                        <div class="space-x-2">
+                            <button onclick="editActualite(${actualite.id})" class="text-red-600 hover:text-red-900 text-sm">Modifier</button>
+                            <button onclick="deleteActualite(${actualite.id})" class="text-red-600 hover:text-red-900 text-sm">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadSettings() {
+            document.getElementById('site-title').value = settings.title || 'Lycée Technique de Gabode';
+            document.getElementById('site-email').value = settings.email || 'ltg@menfop.dj';
+            document.getElementById('site-phone').value = settings.phone || '+253 21 34 13 26';
+            document.getElementById('site-address').value = settings.address || 'Gabode, 3467 Djibouti';
+        }
+
+        // Modal Functions
+        function openArticleModal(articleId = null) {
+            const modal = document.getElementById('article-modal');
+            const form = document.getElementById('article-form');
+            
+            if (articleId) {
+                const article = articles.find(a => a.id === articleId);
+                document.getElementById('article-title').value = article.title;
+                document.getElementById('article-date').value = article.date;
+                document.getElementById('article-author').value = article.author;
+                document.getElementById('article-images').value = article.images.join(', ');
+                document.getElementById('article-content').value = article.content;
+                form.dataset.articleId = articleId;
+            } else {
+                form.reset();
+                delete form.dataset.articleId;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        function openFormationModal(formationId = null) {
+            const modal = document.getElementById('formation-modal');
+            const form = document.getElementById('formation-form');
+            
+            if (formationId) {
+                const formation = formations.find(f => f.id === formationId);
+                document.getElementById('formation-name').value = formation.name;
+                document.getElementById('formation-description').value = formation.description;
+                document.getElementById('formation-duration').value = formation.duration;
+                document.getElementById('formation-category').value = formation.category;
+                document.getElementById('formation-debouches').value = formation.debouches.join('\n');
+                document.getElementById('formation-competences').value = formation.competences.join(', ');
+                document.getElementById('formation-image').value = formation.image;
+                form.dataset.formationId = formationId;
+            } else {
+                form.reset();
+                delete form.dataset.formationId;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeFormationModal() {
+            document.getElementById('formation-modal').classList.add('hidden');
+        }
+
+        // CRUD Operations
+        function editArticle(id) {
+            openArticleModal(id);
+        }
+
+        function deleteArticle(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+                articles = articles.filter(a => a.id !== id);
+                saveData();
+                loadArticles();
+            }
+        }
+
+        function editFormation(id) {
+            openFormationModal(id);
+        }
+
+        function deleteFormation(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette formation ?')) {
+                formations = formations.filter(f => f.id !== id);
+                saveData();
+                loadFormations();
+            }
+        }
+
+        function saveSettings() {
+            settings = {
+                title: document.getElementById('site-title').value,
+                email: document.getElementById('site-email').value,
+                phone: document.getElementById('site-phone').value,
+                address: document.getElementById('site-address').value
+            };
+            localStorage.setItem('ltg_settings', JSON.stringify(settings));
+            alert('Paramètres sauvegardés avec succès !');
+        }
+
+        function saveData() {
+            localStorage.setItem('ltg_articles', JSON.stringify(articles));
+            localStorage.setItem('ltg_formations', JSON.stringify(formations));
+            localStorage.setItem('ltg_actualites', JSON.stringify(actualites));
+        }
+
+        // Form Submissions
+        document.getElementById('article-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                title: document.getElementById('article-title').value,
+                date: document.getElementById('article-date').value,
+                author: document.getElementById('article-author').value,
+                images: document.getElementById('article-images').value.split(',').map(img => img.trim()),
+                content: document.getElementById('article-content').value
+            };
+            
+            if (e.target.dataset.articleId) {
+                const id = parseInt(e.target.dataset.articleId);
+                const index = articles.findIndex(a => a.id === id);
+                articles[index] = { ...formData, id };
+            } else {
+                formData.id = Date.now();
+                articles.push(formData);
+            }
+            
+            saveData();
+            loadArticles();
+            closeArticleModal();
+        });
+
+        document.getElementById('formation-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('formation-name').value,
+                description: document.getElementById('formation-description').value,
+                duration: document.getElementById('formation-duration').value,
+                category: document.getElementById('formation-category').value,
+                debouches: document.getElementById('formation-debouches').value.split('\n').filter(d => d.trim()),
+                competences: document.getElementById('formation-competences').value.split(',').map(c => c.trim()),
+                image: document.getElementById('formation-image').value
+            };
+            
+            if (e.target.dataset.formationId) {
+                const id = parseInt(e.target.dataset.formationId);
+                const index = formations.findIndex(f => f.id === id);
+                formations[index] = { ...formData, id };
+            } else {
+                formData.id = Date.now();
+                formations.push(formData);
+            }
+            
+            saveData();
+            loadFormations();
+            closeFormationModal();
+        });
+
+        // Authentication (simple demo)
+        function checkAuth() {
+            const password = prompt('Mot de passe administrateur :');
+            if (password !== 'admin123') {
+                alert('Mot de passe incorrect');
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (checkAuth()) {
+                loadArticles();
+            }
+        });
+    </script>
+</body>
+</html>

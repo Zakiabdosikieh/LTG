@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTG - Lycée Technique de Gabode | Excellence Technique à Djibouti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --accent-color: #c9302c;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --bg-light: #fafafa;
+            --border-color: #e5e5e5;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: white;
+        }
+        
+        .serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+        
+        .accent-line {
+            height: 3px;
+            background: var(--accent-color);
+            width: 60px;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .image-overlay {
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.2s;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Header Magazine Style -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div class="flex items-center space-x-6">
+                    <span class="text-xs text-gray-500 font-medium">DJIBOUTI</span>
+                    <span class="text-xs text-gray-400">|</span>
+                    <span class="text-xs text-gray-500" id="current-date"></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-black transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="text-gray-600 hover:text-black transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Main Navigation -->
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-black rounded-full overflow-hidden flex items-center justify-center mr-4">
+                        <img src="assets/images/download.jpg" alt="Logo LTG" class="w-full h-full object-cover">
+                    </div>
+                    <h1 class="serif-title text-2xl font-black text-black">Lycée Technique de Gabode</h1>
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#presentation" class="nav-link text-sm font-medium text-gray-700 hover:text-black">Présentation</a>
+                    <a href="#filières" class="nav-link text-sm font-medium text-gray-700 hover:text-black">Filières</a>
+                    <a href="#campus" class="nav-link text-sm font-medium text-gray-700 hover:text-black">Campus</a>
+                    <a href="#actualites" class="nav-link text-sm font-medium text-gray-700 hover:text-black">Actualités</a>
+                    <a href="#contact" class="nav-link text-sm font-medium text-gray-700 hover:text-black">Contact</a>
+                    <a href="admin/admin-complete.html" class="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium hover:bg-red-700 transition">
+                        Administration
+                    </a>
+                </nav>
+                
+                <button class="lg:hidden" id="mobile-menu-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section Magazine Style -->
+    <section class="relative bg-black text-white">
+        <div class="relative h-screen overflow-hidden">
+            <img src="assets/images/487824205_1257495029711663_5267834142294165807_n.jpg" 
+                 alt="Lycée Technique de Gabode" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 image-overlay"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="container mx-auto px-4 text-center">
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Category Badge -->
+                        <div class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-full text-xs font-bold mb-6 uppercase tracking-wider">
+                            Formation d'Excellence
+                        </div>
+                        
+                        <!-- Main Title -->
+                        <h1 class="serif-title text-5xl md:text-7xl font-black mb-6 leading-tight">
+                            Lycée Technique<br>
+                            <span class="text-red-500">de Gabode</span>
+                        </h1>
+                        
+                        <!-- Accent Line -->
+                        <div class="accent-line mx-auto mb-6"></div>
+                        
+                        <!-- Subtitle -->
+                        <p class="text-xl md:text-2xl text-gray-200 mb-8 font-light max-w-2xl mx-auto leading-relaxed">
+                            L'excellence technique au cœur de Djibouti depuis 1985
+                        </p>
+                        
+                        <!-- Stats -->
+                        <div class="flex justify-center space-x-12 mb-12">
+                            <div class="text-center">
+                                <div class="text-4xl font-black">1500+</div>
+                                <div class="text-sm text-gray-400 uppercase tracking-wider">Étudiants</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-black">95%</div>
+                                <div class="text-sm text-gray-400 uppercase tracking-wider">Réussite</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-black">5</div>
+                                <div class="text-sm text-gray-400 uppercase tracking-wider">Filières</div>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button class="bg-white text-black px-8 py-4 font-bold hover:bg-gray-100 transition transform hover:scale-105">
+                                Découvrir le LTG
+                            </button>
+                            <button class="border-2 border-white text-white px-8 py-4 font-bold hover:bg-white hover:text-black transition transform hover:scale-105">
+                                Nous Contacter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white">
+                <div class="flex flex-col items-center">
+                    <span class="text-xs uppercase tracking-wider mb-2">Scroll</span>
+                    <div class="w-px h-8 bg-white animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Content Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Main Featured Article -->
+                <div class="lg:col-span-2">
+                    <article class="card-hover">
+                        <div class="relative overflow-hidden rounded-lg mb-6">
+                            <img src="assets/images/images.jpg" 
+                                 alt="Lycée Technique de Gabode" 
+                                 class="w-full h-96 object-cover">
+                            <div class="absolute top-4 left-4">
+                                <span class="bg-red-600 text-white px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                                    À la une
+                                </span>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h2 class="serif-title text-3xl font-black leading-tight">
+                                Excellence Technique : <br>Le LTG forme les leaders de demain
+                            </h2>
+                            <div class="accent-line w-12"></div>
+                            <p class="text-gray-600 text-lg leading-relaxed">
+                                Situé dans le quartier de Gabode, ville de Djibouti, le Lycée Technique de Gabode se trouve à proximité du Lycée français de Djibouti et de la Base aérienne 188. 
+                                Depuis plus de 35 ans, nous incarnons l'excellence de la formation professionnelle à Djibouti. 
+                                Avec un taux de réussite de 95% et des équipements modernes, nous préparons les futurs talents 
+                                qui transformeront notre économie.
+                            </p>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-600">
+                                    <strong>Localisation stratégique :</strong> Quartier Gabode, à proximité du Lycée français et de la Base aérienne 188
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm text-gray-500">15 mars 2024</span>
+                                    <span class="text-sm text-gray-500">5 min de lecture</span>
+                                </div>
+                                <button class="text-black font-bold hover:text-red-600 transition">
+                                    Lire la suite →
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="space-y-8">
+                    <!-- Quick Stats -->
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="serif-title text-xl font-black mb-6">Chiffres Clés</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                <span class="text-sm font-medium">Étudiants</span>
+                                <span class="text-lg font-black">1500+</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                <span class="text-sm font-medium">Taux de réussite</span>
+                                <span class="text-lg font-black">95%</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                <span class="text-sm font-medium">Filières</span>
+                                <span class="text-lg font-black">5</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium">Professeurs</span>
+                                <span class="text-lg font-black">60+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div class="bg-black text-white p-6 rounded-lg">
+                        <h3 class="serif-title text-xl font-black mb-4">Accès Rapide</h3>
+                        <div class="space-y-3">
+                            <a href="#filières" class="block text-white hover:text-red-400 transition">
+                                → Nos Filières
+                            </a>
+                            <a href="#campus" class="block text-white hover:text-red-400 transition">
+                                → Le Campus
+                            </a>
+                            <a href="#actualites" class="block text-white hover:text-red-400 transition">
+                                → Actualités
+                            </a>
+                            <a href="#contact" class="block text-white hover:text-red-400 transition">
+                                → Contact
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filières Section Magazine Style -->
+    <section id="filières" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-red-600 text-sm font-bold uppercase tracking-wider">Nos Formations</span>
+                <h2 class="serif-title text-4xl md:text-5xl font-black mt-4 mb-6">
+                    Filières d'Excellence
+                </h2>
+                <div class="accent-line mx-auto"></div>
+                <p class="text-gray-600 text-lg mt-6 max-w-2xl mx-auto">
+                    Cinq filières techniques pointues pour former les professionnels dont le marché a besoin
+                </p>
+            </div>
+            
+            <!-- Filières Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- IRT -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600" 
+                             alt="Information et Réseaux Télécommunication" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Industrie
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="serif-title text-xl font-black mb-3">IRT</h3>
+                        <p class="text-gray-600 mb-4">
+                            Information et Réseaux Télécommunication
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Filière industrielle</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Découvrir →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- IMSEC -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600" 
+                             alt="Installation et Maintenance des Systèmes des Équipements Climatiques" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-green-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Industrie
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="serif-title text-xl font-black mb-3">IMSEC</h3>
+                        <p class="text-gray-600 mb-4">
+                            Installation et Maintenance des Systèmes des Équipements Climatiques
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Filière industrielle</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Découvrir →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- ARC -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600" 
+                             alt="Accueil et Relation Clientèle" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-purple-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Tertiaire
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="serif-title text-xl font-black mb-3">ARC</h3>
+                        <p class="text-gray-600 mb-4">
+                            Accueil et Relation Clientèle
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Filière tertiaire</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Découvrir →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- AC -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600" 
+                             alt="Administration et Comptabilité" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-orange-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Tertiaire
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="serif-title text-xl font-black mb-3">AC</h3>
+                        <p class="text-gray-600 mb-4">
+                            Administration et Comptabilité
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Filière tertiaire</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Découvrir →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Formation Infographie -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden border-2 border-red-500">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600" 
+                             alt="Formation Infographie" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-red-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Nouveau
+                            </span>
+                        </div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-yellow-500 text-black px-3 py-1 text-xs font-bold uppercase">
+                                3 mois
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="serif-title text-xl font-black mb-3">Formation Infographie</h3>
+                        <p class="text-gray-600 mb-4">
+                            Arts graphiques et logiciels PAO (Illustrator, Photoshop, InDesign)
+                        </p>
+                        <div class="bg-gray-50 p-3 rounded-lg mb-4">
+                            <p class="text-sm text-gray-600">
+                                <strong>Partenariat :</strong> MENFOP × Digital Dynamic Solution Djibouti
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Formation courte</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Découvrir →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campus Gallery Magazine Style -->
+    <section id="campus" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-red-600 text-sm font-bold uppercase tracking-wider">Découvrir</span>
+                <h2 class="serif-title text-4xl md:text-5xl font-black mt-4 mb-6">
+                    Notre Campus
+                </h2>
+                <div class="accent-line mx-auto"></div>
+                <p class="text-gray-600 text-lg mt-6 max-w-2xl mx-auto">
+                    Un environnement moderne et inspirant pour l'excellence technique
+                </p>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card-hover rounded-lg overflow-hidden">
+                    <img src="assets/images/images.jpg" 
+                         alt="Vue du campus" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-bold text-lg">Bâtiment Principal</h3>
+                        <p class="text-gray-600 text-sm mt-1">Cœur de l'établissement</p>
+                    </div>
+                </div>
+                <div class="card-hover rounded-lg overflow-hidden">
+                    <img src="assets/images/487824205_1257495029711663_5267834142294165807_n.jpg" 
+                         alt="Bâtiment principal" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-bold text-lg">Laboratoires Modernes</h3>
+                        <p class="text-gray-600 text-sm mt-1">Équipements de pointe</p>
+                    </div>
+                </div>
+                <div class="card-hover rounded-lg overflow-hidden">
+                    <img src="assets/images/483100095_1243973941063772_6016869182157493551_n.jpg" 
+                         alt="Installations techniques" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-bold text-lg">Ateliers Spécialisés</h3>
+                        <p class="text-gray-600 text-sm mt-1">Pratique professionnelle</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Actualités Section Magazine Style -->
+    <section id="actualites" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-red-600 text-sm font-bold uppercase tracking-wider">Actualités</span>
+                <h2 class="serif-title text-4xl md:text-5xl font-black mt-4 mb-6">
+                    Dernières Nouvelles
+                </h2>
+                <div class="accent-line mx-auto"></div>
+                <p class="text-gray-600 text-lg mt-6 max-w-2xl mx-auto">
+                    Suivez l'actualité du Lycée Technique de Gabode et nos événements
+                </p>
+            </div>
+            
+            <!-- Featured Article -->
+            <div class="mb-16">
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-64 md:h-96 overflow-hidden">
+                        <img src="assets/images/487423112_1259393242855175_5570912872294534046_n.jpg" 
+                             alt="Featured Article" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 image-overlay"></div>
+                        <div class="absolute top-8 left-8">
+                            <span class="bg-red-600 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider">
+                                À la une
+                            </span>
+                        </div>
+                        <div class="absolute bottom-8 left-8 right-8">
+                            <div class="text-white">
+                                <h3 class="serif-title text-3xl md:text-4xl font-black mb-4">
+                                    Excellence Technique : <br>Le LTG forme les leaders de demain
+                                </h3>
+                                <div class="flex items-center space-x-6">
+                                    <span class="text-sm text-gray-200">15 mars 2024</span>
+                                    <span class="text-sm text-gray-200">8 min de lecture</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <!-- Articles Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="assets/images/494378819_1287526726708493_7113163948430291751_n.jpg" 
+                             alt="Évaluations Bac Professionnel" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-purple-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Examens
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-purple-600 font-bold mb-2">Décembre 2025</div>
+                        <h3 class="serif-title text-xl font-black mb-3">Évaluations du Bac Professionnel</h3>
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Les classes de Terminale des filières AC, ARC et IRT ont passé leurs évaluations...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">3 min de lecture</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Lire →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Article 2 -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="assets/images/494257429_1287537100040789_6569690204644399907_n.jpg" 
+                             alt="Remise des diplômes" 
+                             class="w-full h-full object-cover brightness-110 contrast-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-green-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Cérémonie
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-green-600 font-bold mb-2">Juillet 2025</div>
+                        <h3 class="serif-title text-xl font-black mb-3">Remise des Diplômes</h3>
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Cérémonie de remise des diplômes pour la promotion 2025 avec un taux de réussite...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">4 min de lecture</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Lire →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Article 3 -->
+                <article class="card-hover bg-white rounded-lg overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="assets/images/487509235_1259400806187752_2752090816534539491_n.jpg" 
+                             alt="Projet Innovation" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                Innovation
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 font-bold mb-2">Mai 2025</div>
+                        <h3 class="serif-title text-xl font-black mb-3">Projet Innovation Numérique</h3>
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Lancement du nouveau laboratoire d'innovation numérique équipé des dernières technologies...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">5 min de lecture</span>
+                            <button class="text-black font-bold hover:text-red-600 transition">
+                                Lire →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <!-- View All Button -->
+            <div class="text-center mt-12">
+                <button class="bg-black text-white px-8 py-3 font-bold hover:bg-gray-800 transition transform hover:scale-105">
+                    Voir toutes les actualités
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section Magazine Style -->
+    <section id="contact" class="py-20 bg-black text-white">
+        <div class="container mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-red-500 text-sm font-bold uppercase tracking-wider">Contact</span>
+                <h2 class="serif-title text-4xl md:text-5xl font-black mt-4 mb-6">
+                    Restons en Contact
+                </h2>
+                <div class="accent-line mx-auto bg-red-500"></div>
+                <p class="text-gray-300 text-lg mt-6 max-w-2xl mx-auto">
+                    Une question ? Une suggestion ? Notre équipe est à votre écoute
+                </p>
+            </div>
+            
+            <!-- Contact Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="serif-title text-2xl font-black mb-8">Informations</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Adresse</h4>
+                                <p class="text-gray-300">Gabode, 3467 Djibouti</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Téléphone</h4>
+                                <p class="text-gray-300">+253 21 34 13 26</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Email</h4>
+                                <p class="text-gray-300">ltg@menfop.dj</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Direction</h4>
+                                <p class="text-gray-300">Mme Fathia Mahamoud Aden, Proviseure</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div>
+                    <h3 class="serif-title text-2xl font-black mb-8">Envoyez-nous un message</h3>
+                    <form class="space-y-6">
+                        <div>
+                            <input type="text" 
+                                   placeholder="Votre nom complet" 
+                                   class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition">
+                        </div>
+                        <div>
+                            <input type="email" 
+                                   placeholder="Votre adresse email" 
+                                   class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition">
+                        </div>
+                        <div>
+                            <textarea placeholder="Votre message" 
+                                      rows="6" 
+                                      class="w-full px-4 py-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition resize-none"></textarea>
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-red-500 text-white px-6 py-4 rounded-lg font-bold hover:bg-red-600 transition transform hover:scale-105">
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Magazine Style -->
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-4">
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">LTG</span>
+                        </div>
+                        <h3 class="serif-title text-xl font-black">Lycée Technique de Gabode</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        L'excellence technique au cœur de Djibouti depuis 1985. 
+                        Formation professionnelle d'exception sous la supervision du MENFOP.
+                    </p>
+                </div>
+                
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-wider">Navigation</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#presentation" class="text-gray-400 hover:text-white transition">Présentation</a></li>
+                        <li><a href="#filières" class="text-gray-400 hover:text-white transition">Filières</a></li>
+                        <li><a href="#campus" class="text-gray-400 hover:text-white transition">Campus</a></li>
+                        <li><a href="#actualites" class="text-gray-400 hover:text-white transition">Actualités</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-wider">Ressources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Calendrier</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Bourses</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Stages</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6 uppercase tracking-wider">Suivez-nous</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                            <span class="text-white font-bold">f</span>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                            <span class="text-white font-bold">t</span>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                            <span class="text-white font-bold">in</span>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Restez connecté avec l'actualité du LTG
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-gray-400 text-sm mb-4 md:mb-0">
+                        &copy; 2024 Lycée Technique de Gabode - MENFOP. Tous droits réservés.
+                    </div>
+                    <div class="text-gray-400 text-sm">
+                        Formation technique d'excellence au cœur de Djibouti
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal pour les articles complets -->
+    <div id="article-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-6xl w-full max-h-screen overflow-y-auto">
+                <!-- Contenu de l'article sera inséré ici -->
+                <div id="article-modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sync-complete.js"></script>
+    <script>
+        // Synchronisation directe et simple
+        function syncDataFromAdmin() {
+            try {
+                const data = localStorage.getItem('ltg_admin_data');
+                if (data) {
+                    const siteData = JSON.parse(data);
+                    console.log('📥 Données synchronisées depuis l\'admin:', siteData);
+                    return siteData;
+                }
+            } catch (error) {
+                console.log('⚠️ Erreur de synchronisation:', error);
+            }
+            return {
+                articles: [],
+                formations: [],
+                actualites: [],
+                campus: { photos: [], description: '' },
+                contact: {},
+                stats: {},
+                general: {}
+            };
+        }
+        
+        // Appliquer les articles synchronisés
+        function applySyncedArticles() {
+            const syncedData = syncDataFromAdmin();
+            const articles = syncedData.articles || [];
+            
+            // Chercher le conteneur d'articles
+            const container = document.querySelector('#actualites .grid.grid-cols-1.md\\:grid-cols-3.gap-8');
+            
+            if (container && articles.length > 0) {
+                console.log(`📝 Application de ${articles.length} articles`);
+                
+                // Prendre les 3 premiers articles
+                const articlesToShow = articles.slice(0, 3);
+                
+                container.innerHTML = articlesToShow.map(article => `
+                    <article class="card-hover bg-white rounded-lg overflow-hidden">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${article.images && article.images[0] ? article.images[0] : 'https://images.unsplash.com/photo-1589997675112-3f223704736c?w=600'}" 
+                                 alt="${article.title}" 
+                                 class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4">
+                                <span class="bg-red-600 text-white px-3 py-1 text-xs font-bold uppercase">
+                                    Article
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-red-600 font-bold mb-2">${new Date(article.date).toLocaleDateString('fr-FR')}</div>
+                            <h3 class="serif-title text-xl font-black mb-3">${article.title}</h3>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                ${article.content ? article.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : 'Aucun contenu'}
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">${article.author || 'Admin'}</span>
+                                <button class="text-black font-bold hover:text-red-600 transition" onclick="showArticleModal('${article.title}')">
+                                    Lire →
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+                
+                // Mettre à jour les données pour les modals
+                if (typeof window !== 'undefined') {
+                    window.siteArticles = {};
+                    articles.forEach(article => {
+                        window.siteArticles[article.title] = {
+                            images: article.images || [],
+                            date: new Date(article.date).toLocaleDateString('fr-FR'),
+                            auteur: article.author || 'Admin',
+                            contenu: article.content || ''
+                        };
+                    });
+                }
+            } else {
+                console.log('📝 Aucun article à synchroniser ou conteneur non trouvé');
+            }
+        }
+        
+        // Afficher l'article complet dans une modal
+        function showArticleModal(title) {
+            const article = window.siteArticles[title];
+            if (!article) {
+                console.log('❌ Article non trouvé:', title);
+                return;
+            }
+            
+            const modal = document.getElementById('article-modal');
+            const modalContent = document.getElementById('article-modal-content');
+            
+            // Créer la galerie de photos
+            const galleryHtml = article.images.map((img, index) => `
+                <div class="relative ${index === 0 ? 'col-span-2 row-span-2' : ''}">
+                    <img src="${img}" alt="${title} - Photo ${index + 1}" 
+                         class="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition"
+                         onclick="openImageViewer(${index})">
+                    ${index === 0 ? '<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>' : ''}
+                </div>
+            `).join('');
+            
+            modalContent.innerHTML = `
+                <div class="relative">
+                    <!-- Galerie d'images -->
+                    <div class="grid grid-cols-3 gap-2 p-4 bg-gray-100">
+                        ${galleryHtml}
+                    </div>
+                    
+                    <!-- Bouton fermer -->
+                    <div class="absolute top-6 right-6">
+                        <button onclick="closeArticleModal()" 
+                                class="bg-white/90 backdrop-blur rounded-full p-3 hover:bg-white transition shadow-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Titre sur l'image principale -->
+                    <div class="absolute bottom-8 left-8">
+                        <span class="bg-red-600 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider rounded-full">Article</span>
+                        <h2 class="serif-title text-4xl font-black text-white mt-3 drop-shadow-lg">${title}</h2>
+                    </div>
+                </div>
+                
+                <!-- Contenu de l'article -->
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            <span class="font-medium">${article.date}</span>
+                            <span class="mx-2">•</span>
+                            <span>${article.auteur}</span>
+                            <span class="mx-2">•</span>
+                            <span class="text-red-600 font-medium">${article.images.length} photos</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="text-gray-600 hover:text-black">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenu HTML complet -->
+                    <div class="prose max-w-none">
+                        ${article.contenu}
+                    </div>
+                    
+                    <!-- Articles similaires -->
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h4 class="font-bold mb-4">Articles similaires</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            ${Object.keys(window.siteArticles).slice(0, 3).map(otherTitle => `
+                                <button onclick="showArticleModal('${otherTitle}')" 
+                                        class="text-left p-3 bg-gray-50 rounded hover:bg-gray-100 transition">
+                                    <div class="text-sm font-medium">${otherTitle}</div>
+                                    <div class="text-xs text-gray-500">${window.siteArticles[otherTitle].date}</div>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        // Fermer la modal d'article
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+        
+        // Fermer les modals avec Escape et clic extérieur
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeArticleModal();
+                closeImageViewer();
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            const articleModal = document.getElementById('article-modal');
+            if (e.target === articleModal) {
+                closeArticleModal();
+            }
+        });
+        
+        // Visionneuse d'images plein écran
+        function openImageViewer(imageIndex) {
+            const article = window.siteArticles[Object.keys(window.siteArticles)[0]]; // Prendre le premier article
+            const images = article.images;
+            
+            const viewer = document.createElement('div');
+            viewer.className = 'fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50';
+            
+            let currentIndex = imageIndex;
+            
+            const updateImage = () => {
+                viewer.innerHTML = `
+                    <div class="relative w-full h-full flex items-center justify-center">
+                        <img src="${images[currentIndex]}" alt="Photo ${currentIndex + 1}" 
+                             class="max-w-full max-h-full object-contain">
+                        
+                        <button onclick="closeImageViewer()" 
+                                class="absolute top-4 right-4 bg-white/20 backdrop-blur rounded-full p-2 hover:bg-white/30 transition">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        
+                        ${images.length > 1 ? `
+                            <button onclick="prevImage()" 
+                                    class="absolute left-4 bg-white/20 backdrop-blur rounded-full p-2 hover:bg-white/30 transition">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button onclick="nextImage()" 
+                                    class="absolute right-4 bg-white/20 backdrop-blur rounded-full p-2 hover:bg-white/30 transition">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 backdrop-blur rounded-full px-4 py-2">
+                                <span class="text-white text-sm">${currentIndex + 1} / ${images.length}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                window.closeImageViewer = () => {
+                    document.body.removeChild(viewer);
+                };
+                
+                window.prevImage = () => {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateImage();
+                };
+                
+                window.nextImage = () => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateImage();
+                };
+                
+                // Navigation au clavier
+                viewer.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeImageViewer();
+                    if (e.key === 'ArrowLeft') prevImage();
+                    if (e.key === 'ArrowRight') nextImage();
+                });
+                
+                viewer.focus();
+            };
+            
+            updateImage();
+            document.body.appendChild(viewer);
+        }
+        
+        function closeImageViewer() {
+            const viewer = document.querySelector('.fixed.inset-0.bg-opacity-95');
+            if (viewer) {
+                document.body.removeChild(viewer);
+            }
+        }
+        const updateDate = () => {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('fr-FR', options);
+            document.getElementById('current-date').textContent = dateStr;
+        };
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDate();
+            applySyncedArticles();
+            
+            // Écouter les changements de synchronisation
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'ltg_sync_signal' || e.key === 'ltg_admin_data') {
+                    console.log('🔄 Changement détecté, re-synchronisation...');
+                    setTimeout(applySyncedArticles, 100);
+                }
+            });
+            
+            // Vérifier toutes les 2 secondes
+            setInterval(() => {
+                const lastSync = localStorage.getItem('ltg_sync_signal');
+                if (lastSync && parseInt(lastSync) > Date.now() - 5000) {
+                    applySyncedArticles();
+                    localStorage.removeItem('ltg_sync_signal');
+                }
+            }, 2000);
+        });
+        
+        // Smooth scrolling pour les liens d'ancrage
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                console.log('Mobile menu clicked');
+            });
+        }
+    </script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

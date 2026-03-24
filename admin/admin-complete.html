@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration LTG - Gestion Complète A à Z</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .serif-title { font-family: 'Playfair Display', serif; }
+        .sans-text { font-family: 'Inter', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { background: #dc2626; color: white; }
+    </style>
+<!-- Ajouter CSS pour l'éditeur riche -->
+    <style>
+        .editor-toolbar {
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            background: #f9fafb;
+            padding: 8px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        
+        .editor-btn {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .editor-btn:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .editor-btn.active {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+        
+        .editor-content {
+            border: 1px solid #e5e7eb;
+            border-radius: 0 0 8px 8px;
+            min-height: 300px;
+            padding: 16px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            outline: none;
+            background: white;
+        }
+        
+        .editor-content:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        .color-picker {
+            width: 40px;
+            height: 30px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .font-size-select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 sans-text">
+    <!-- Header Admin -->
+    <header class="bg-black text-white py-4 px-6 shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">LTG</span>
+                </div>
+                <h1 class="serif-title text-2xl font-black">🎛️ Panel Admin Complet A-Z</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="admin-user" class="text-sm text-gray-300">Administrateur</span>
+                <button onclick="forceSyncToSite()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition">
+                    🔄 Sync Site
+                </button>
+                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition">
+                    Déconnexion
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 2.584 19 1 19h2c1.584 0 3-.523 3-1.253M6 20.253V6.253m7.5 0v13c0 .698-.563 1.25-1.25 1.25H16"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">📰 Articles</p>
+                        <p id="articles-count" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-full">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 2.584 19 1 19h2c1.584 0 3-.523 3-1.253M6 20.253V6.253m7.5 0v13c0 .698-.563 1.25-1.25 1.25H16"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">🎓 Formations</p>
+                        <p id="formations-count" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-full">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2zM8 10h8m-4-4v4"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">📢 Actualités</p>
+                        <p id="actualites-count" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-red-100 rounded-full">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586 1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">🖼️ Photos</p>
+                        <p id="photos-count" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-lg shadow-sm mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex flex-wrap space-x-1 px-6" aria-label="Tabs">
+                    <button onclick="showTab('general')" class="tab-btn active py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="general">
+                        🏠 Général
+                    </button>
+                    <button onclick="showTab('articles')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="articles">
+                        📰 Articles
+                    </button>
+                    <button onclick="showTab('formations')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="formations">
+                        🎓 Formations
+                    </button>
+                    <button onclick="showTab('actualites')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="actualites">
+                        📢 Actualités
+                    </button>
+                    <button onclick="showTab('campus')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="campus">
+                        🏫 Campus
+                    </button>
+                    <button onclick="showTab('contact')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="contact">
+                        📞 Contact
+                    </button>
+                    <button onclick="showTab('stats')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="stats">
+                        📊 Statistiques
+                    </button>
+                    <button onclick="showTab('appearance')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="appearance">
+                        🎨 Apparence
+                    </button>
+                    <button onclick="showTab('seo')" class="tab-btn py-4 px-4 font-medium text-gray-700 hover:bg-gray-50" data-tab="seo">
+                        🔍 SEO
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- General Tab -->
+        <div id="general-tab" class="tab-content active">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">🏠 Informations Générales du Site</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom du Lycée</label>
+                        <input type="text" id="site-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="Lycée Technique de Gabode">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Slogan</label>
+                        <input type="text" id="site-slogan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="L'excellence technique au cœur de Djibouti">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="site-description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">Depuis plus de 35 ans, le Lycée Technique de Gabode incarne l'excellence de la formation professionnelle à Djibouti.</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mots-clés SEO</label>
+                        <input type="text" id="site-keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="lycée technique, gabode, djibouti, formation professionnelle, MENFOP">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Articles Tab -->
+        <div id="articles-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">📰 Gestion des Articles</h2>
+                    <div class="space-x-2">
+                        <button onclick="openArticleModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                            ✏️ Nouvel Article
+                        </button>
+                        <button onclick="importArticles()" class="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition">
+                            📥 Importer Articles
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <input type="text" id="articles-search" placeholder="🔍 Rechercher un article..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auteur</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photos</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-list" class="bg-white divide-y divide-gray-200">
+                            <!-- Articles will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formations Tab -->
+        <div id="formations-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">🎓 Gestion des Formations</h2>
+                    <button onclick="openFormationModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        ✏️ Nouvelle Formation
+                    </button>
+                </div>
+                
+                <div id="formations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Formations will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Actualités Tab -->
+        <div id="actualites-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="serif-title text-2xl font-black">📢 Gestion des Actualités</h2>
+                    <button onclick="openActualiteModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        ✏️ Nouvelle Actualité
+                    </button>
+                </div>
+                
+                <div id="actualites-list" class="space-y-4">
+                    <!-- Actualités will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Campus Tab -->
+        <div id="campus-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">🏫 Gestion du Campus</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Photos du Campus (URLs séparées par des virgules)</label>
+                        <textarea id="campus-photos" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="photo1.jpg, photo2.jpg, photo3.jpg"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description du Campus</label>
+                        <textarea id="campus-description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">Découvrez notre campus moderne situé à Gabode, au cœur de Djibouti. Nos installations sont équipées des dernières technologies pour offrir un environnement d'apprentissage optimal.</textarea>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="font-bold mb-4">Aperçu des Photos</h3>
+                    <div id="campus-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Campus photos preview -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Tab -->
+        <div id="contact-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">📞 Informations de Contact</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="contact-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="ltg@menfop.dj">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                        <input type="tel" id="contact-phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="+253 21 34 13 26">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
+                        <input type="text" id="contact-address" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="Gabode, 3467 Djibouti">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Direction</label>
+                        <input type="text" id="contact-director" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" value="Mme Fathia Mahamoud Aden, Proviseure">
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Réseaux Sociaux</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input type="text" id="social-facebook" placeholder="Facebook URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="text" id="social-twitter" placeholder="Twitter URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <input type="text" id="social-linkedin" placeholder="LinkedIn URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">📊 Statistiques du Site</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600" id="stat-students">1500+</div>
+                        <div class="text-sm text-gray-600">Étudiants</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-3xl font-bold text-green-600" id="stat-success">95%</div>
+                        <div class="text-sm text-gray-600">Taux de Réussite</div>
+                    </div>
+                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                        <div class="text-3xl font-bold text-purple-600" id="stat-formations">5</div>
+                        <div class="text-sm text-gray-600">Formations</div>
+                    </div>
+                    <div class="text-center p-4 bg-red-50 rounded-lg">
+                        <div class="text-3xl font-bold text-red-600" id="stat-years">35+</div>
+                        <div class="text-sm text-gray-600">Années d'Expérience</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Personnaliser les statistiques</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="number" id="stat-students-input" placeholder="Nombre d'étudiants" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <input type="number" id="stat-success-input" placeholder="Taux de réussite (%)" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <input type="number" id="stat-formations-input" placeholder="Nombre de formations" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <input type="number" id="stat-years-input" placeholder="Années d'expérience" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <button onclick="updateStats()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                        Mettre à jour les statistiques
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appearance Tab -->
+        <div id="appearance-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">🎨 Apparence du Site</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Couleur Principale</label>
+                        <input type="color" id="primary-color" value="#dc2626" class="w-full h-10 rounded cursor-pointer">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Couleur Secondaire</label>
+                        <input type="color" id="secondary-color" value="#000000" class="w-full h-10 rounded cursor-pointer">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Police de Titres</label>
+                        <select id="title-font" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="Playfair Display">Playfair Display</option>
+                            <option value="Inter">Inter</option>
+                            <option value="Roboto">Roboto</option>
+                            <option value="Montserrat">Montserrat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Style du Site</label>
+                        <select id="site-style" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="magazine">Magazine</option>
+                            <option value="corporate">Corporate</option>
+                            <option value="modern">Moderne</option>
+                            <option value="minimal">Minimal</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Logo du Site</label>
+                    <input type="text" id="site-logo" placeholder="URL du logo" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="download.jpg">
+                    <div class="mt-2">
+                        <img id="logo-preview" src="download.jpg" alt="Logo" class="h-16 w-auto rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Tab -->
+        <div id="seo-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="serif-title text-2xl font-black mb-6">🔍 Optimisation SEO</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Titre SEO (Meta Title)</label>
+                        <input type="text" id="seo-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="Lycée Technique de Gabode - Formation d'Excellence à Djibouti">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description SEO (Meta Description)</label>
+                        <textarea id="seo-description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Le Lycée Technique de Gabode offre une formation professionnelle d'excellence avec des filières en informatique, électrotechnique, mécanique et commerce.</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">URL Canonique</label>
+                        <input type="text" id="seo-canonical" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="https://ltg-djibouti.dj">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Google Analytics ID</label>
+                        <input type="text" id="google-analytics" placeholder="G-XXXXXXXXXX" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hidden file input for imports -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <!-- Modals -->
+    <div id="article-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="serif-title text-2xl font-black">✏️ Éditer l'Article</h3>
+                        <button onclick="closeModal('article-modal')" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form id="article-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Titre</label>
+                            <input type="text" id="article-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                <input type="date" id="article-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Auteur</label>
+                                <input type="text" id="article-author" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photos de l'article</label>
+                            <div class="space-y-4">
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition cursor-pointer" onclick="document.getElementById('article-images-upload').click()">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-600">
+                                        <span class="font-medium">Cliquez pour uploader</span> ou glissez-déposez les photos ici
+                                    </p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB par photo</p>
+                                </div>
+                                <input type="file" id="article-images-upload" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                                <div id="article-images-preview" class="grid grid-cols-3 gap-3">
+                                    <!-- Aperçu des photos uploadées -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contenu de l'article</label>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-600 mb-3">✏️ Éditeur de texte riche - Formattez votre article comme dans Word</p>
+                                
+                                <!-- Toolbar de l'éditeur -->
+                                <div class="editor-toolbar">
+                                    <!-- Formatage de texte -->
+                                    <button type="button" class="editor-btn" onclick="formatText('bold')" title="Gras">
+                                        <strong>B</strong>
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('italic')" title="Italique">
+                                        <em>I</em>
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('underline')" title="Souligné">
+                                        <u>U</u>
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('strikeThrough')" title="Barré">
+                                        <s>S</s>
+                                    </button>
+                                    
+                                    <div class="border-l border-gray-300 mx-2"></div>
+                                    
+                                    <!-- Alignement -->
+                                    <button type="button" class="editor-btn" onclick="formatText('justifyLeft')" title="Aligner à gauche">
+                                        ⬅️
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('justifyCenter')" title="Centrer">
+                                        ⬆️
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('justifyRight')" title="Aligner à droite">
+                                        ➡️
+                                    </button>
+                                    
+                                    <div class="border-l border-gray-300 mx-2"></div>
+                                    
+                                    <!-- Listes -->
+                                    <button type="button" class="editor-btn" onclick="formatText('insertUnorderedList')" title="Liste à puces">
+                                        • Liste
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="formatText('insertOrderedList')" title="Liste numérotée">
+                                        1. Liste
+                                    </button>
+                                    
+                                    <div class="border-l border-gray-300 mx-2"></div>
+                                    
+                                    <!-- Taille du texte -->
+                                    <select class="font-size-select" onchange="formatText('fontSize', this.value)">
+                                        <option value="3">Normal</option>
+                                        <option value="1">Très petit</option>
+                                        <option value="2">Petit</option>
+                                        <option value="4">Grand</option>
+                                        <option value="5">Très grand</option>
+                                        <option value="6">Énorme</option>
+                                    </select>
+                                    
+                                    <!-- Couleurs -->
+                                    <input type="color" class="color-picker" onchange="formatText('foreColor', this.value)" title="Couleur du texte">
+                                    <input type="color" class="color-picker" onchange="formatText('hiliteColor', this.value)" title="Couleur de fond">
+                                    
+                                    <div class="border-l border-gray-300 mx-2"></div>
+                                    
+                                    <!-- Autres -->
+                                    <button type="button" class="editor-btn" onclick="formatText('removeFormat')" title="Supprimer le formatage">
+                                        🔄
+                                    </button>
+                                    <button type="button" class="editor-btn" onclick="insertLink()" title="Insérer un lien">
+                                        🔗
+                                    </button>
+                                </div>
+                                
+                                <!-- Zone d'édition -->
+                                <div id="article-content" class="editor-content" contenteditable="true">
+                                    Écrivez votre article ici... Utilisez la toolbar pour formater le texte !
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="closeModal('article-modal')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formation Modal -->
+    <div id="formation-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="serif-title text-2xl font-black">✏️ Formation</h3>
+                        <button onclick="closeModal('formation-modal')" class="text-gray-500 hover:text-black">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form id="formation-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nom de la formation</label>
+                            <input type="text" id="formation-name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <textarea id="formation-description" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Durée</label>
+                                <input type="text" id="formation-duration" placeholder="ex: 3 ans, 6 mois" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                                <select id="formation-category" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                                    <option value="">Choisir...</option>
+                                    <option value="industriel">Industriel</option>
+                                    <option value="tertiaire">Tertiaire</option>
+                                    <option value="court">Formation courte</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Débouchés (un par ligne)</label>
+                            <textarea id="formation-debouches" rows="3" placeholder="Opérateur télécoms&#10;Administrateur réseaux&#10;Technicien support" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Compétences (un par ligne)</label>
+                            <textarea id="formation-competences" rows="3" placeholder="Réseaux TCP/IP&#10;Administration systèmes&#10;Sécurité informatique" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">URL de l'image</label>
+                            <input type="url" id="formation-image" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="closeModal('formation-modal')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage - Système corrigé
+        let siteData = {
+            general: {
+                name: 'Lycée Technique de Gabode',
+                slogan: "L'excellence technique au cœur de Djibouti",
+                description: "Depuis plus de 35 ans, le Lycée Technique de Gabode incarne l'excellence de la formation professionnelle à Djibouti.",
+                keywords: "lycée technique, gabode, djibouti, formation professionnelle, MENFOP"
+            },
+            articles: [],
+            formations: [],
+            actualites: [],
+            campus: {
+                photos: ['images.jpg', '483100095_1243973941063772_6016869182157493551_n.jpg', '487824205_1257495029711663_5267834142294165807_n.jpg'],
+                description: 'Découvrez notre campus moderne situé à Gabode...'
+            },
+            contact: {
+                email: 'ltg@menfop.dj',
+                phone: '+253 21 34 13 26',
+                address: 'Gabode, 3467 Djibouti',
+                director: 'Mme Fathia Mahamoud Aden, Proviseure',
+                social: {
+                    facebook: '',
+                    twitter: '',
+                    linkedin: ''
+                }
+            },
+            stats: {
+                students: '1500+',
+                success: '95%',
+                formations: '5',
+                years: '35+'
+            },
+            appearance: {
+                primaryColor: '#dc2626',
+                secondaryColor: '#1a1a1a',
+                fontFamily: 'Inter',
+                logo: 'download.jpg'
+            },
+            seo: {
+                title: 'LTG - Lycée Technique de Gabode | Excellence Technique à Djibouti',
+                description: 'Lycée Technique de Gabode - Formation professionnelle d\'excellence à Djibouti',
+                keywords: 'LTG, Lycée Technique, Gabode, Djibouti, formation technique',
+                canonicalUrl: '',
+                googleAnalytics: ''
+            }
+        };
+        
+        // Charger les données au démarrage
+        function loadData() {
+            try {
+                const stored = localStorage.getItem('ltg_admin_data');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    // Fusionner avec les données par défaut pour préserver la structure
+                    siteData = { ...siteData, ...parsed };
+                    console.log('📥 Données chargées:', Object.keys(parsed));
+                }
+            } catch (error) {
+                console.error('❌ Erreur chargement données:', error);
+            }
+        }
+        
+        // Sauvegarder les données
+        function saveData() {
+            try {
+                localStorage.setItem('ltg_admin_data', JSON.stringify(siteData));
+                // Envoyer un signal de synchronisation
+                localStorage.setItem('ltg_sync_signal', Date.now().toString());
+                console.log('💾 Données sauvegardées et synchronisées');
+                return true;
+            } catch (error) {
+                console.error('❌ Erreur sauvegarde données:', error);
+                return false;
+            }
+        }
+
+        // Initialisation au chargement
+        loadData();
+
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            const clickedBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            
+            // Load data for the tab
+            switch(tabName) {
+                case 'general':
+                    loadGeneral();
+                    break;
+                case 'articles':
+                    loadArticles();
+                    break;
+                case 'formations':
+                    loadFormations();
+                    break;
+                case 'actualites':
+                    loadActualites();
+                    break;
+                case 'campus':
+                    loadCampusPhotos();
+                    break;
+                case 'contact':
+                    loadContactInfo();
+                    break;
+                case 'stats':
+                    loadStats();
+                    break;
+                case 'appearance':
+                    loadAppearance();
+                    break;
+                case 'seo':
+                    loadSEO();
+                    break;
+            }
+        }
+
+        // Load Functions
+        function loadGeneral() {
+            document.getElementById('site-name').value = siteData.general.name;
+            document.getElementById('site-slogan').value = siteData.general.slogan;
+            document.getElementById('site-description').value = siteData.general.description;
+            document.getElementById('site-keywords').value = siteData.general.keywords;
+        }
+
+        function loadArticles() {
+            const tbody = document.getElementById('articles-list');
+            if (!tbody) return;
+            
+            tbody.innerHTML = siteData.articles.map(article => `
+                <tr>
+                    <td class="px-4 py-3">${article.title}</td>
+                    <td class="px-4 py-3">${article.date}</td>
+                    <td class="px-4 py-3">${article.author}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs rounded-full ${article.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${article.status}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <button onclick="openArticleModal(${article.id})" class="text-blue-600 hover:text-blue-800 mr-2">✏️</button>
+                        <button onclick="deleteArticle(${article.id})" class="text-red-600 hover:text-red-800">🗑️</button>
+                        <button onclick="toggleArticleStatus(${article.id})" class="text-green-600 hover:text-green-800">👁️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteArticle(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+                siteData.articles = siteData.articles.filter(a => a.id !== id);
+                saveData();
+                loadArticles();
+                updateCounts();
+            }
+        }
+
+        function toggleArticleStatus(id) {
+            const article = siteData.articles.find(a => a.id === id);
+            article.status = article.status === 'published' ? 'draft' : 'published';
+            saveData();
+            loadArticles();
+        }
+
+        function loadActualites() {
+            const container = document.getElementById('actualites-list');
+            if (!container) return;
+            
+            container.innerHTML = siteData.actualites.map(actualite => `
+                <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold">${actualite.title}</h4>
+                            <p class="text-gray-600 text-sm">${actualite.description}</p>
+                            <p class="text-gray-500 text-xs mt-1">${actualite.date}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-800">✏️</button>
+                            <button class="text-red-600 hover:text-red-800">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadCampusPhotos() {
+            const container = document.getElementById('campus-photos-grid');
+            if (!container) return;
+            
+            container.innerHTML = siteData.campus.photos.map((photo, index) => `
+                <div class="relative group">
+                    <img src="${photo}" alt="Campus photo ${index + 1}" class="w-full h-32 object-cover rounded-lg">
+                    <button onclick="removeCampusPhoto(${index})" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeCampusPhoto(index) {
+            siteData.campus.photos.splice(index, 1);
+            saveData();
+            loadCampusPhotos();
+        }
+
+        function loadContactInfo() {
+            document.getElementById('contact-email').value = siteData.contact.email;
+            document.getElementById('contact-phone').value = siteData.contact.phone;
+            document.getElementById('contact-address').value = siteData.contact.address;
+            document.getElementById('contact-director').value = siteData.contact.director;
+        }
+
+        function loadStats() {
+            document.getElementById('stats-students').value = siteData.stats.students;
+            document.getElementById('stats-success').value = siteData.stats.success;
+            document.getElementById('stats-formations').value = siteData.stats.formations;
+            document.getElementById('stats-years').value = siteData.stats.years;
+        }
+
+        function loadAppearance() {
+            document.getElementById('primary-color').value = siteData.appearance.primaryColor;
+            document.getElementById('secondary-color').value = siteData.appearance.secondaryColor;
+            document.getElementById('font-family').value = siteData.appearance.fontFamily;
+            document.getElementById('logo-url').value = siteData.appearance.logo;
+        }
+
+        function loadSEO() {
+            document.getElementById('seo-title').value = siteData.seo.title;
+            document.getElementById('seo-description').value = siteData.seo.description;
+            document.getElementById('seo-keywords').value = siteData.seo.keywords;
+            document.getElementById('canonical-url').value = siteData.seo.canonicalUrl;
+            document.getElementById('google-analytics').value = siteData.seo.googleAnalytics;
+        }
+
+        function updateCounts() {
+            document.getElementById('articles-count').textContent = siteData.articles.length;
+            document.getElementById('formations-count').textContent = siteData.formations.length;
+            document.getElementById('actualites-count').textContent = siteData.actualites.length;
+            document.getElementById('photos-count').textContent = siteData.campus.photos.length;
+        }
+
+        // Initialiser les compteurs
+        updateCounts();
+
+        // Fonctions pour l'éditeur de texte riche
+        function openFormationModal(formationId = null) {
+            const modal = document.getElementById('formation-modal');
+            const form = document.getElementById('formation-form');
+            
+            if (formationId) {
+                const formation = siteData.formations.find(f => f.id === formationId);
+                document.getElementById('formation-name').value = formation.name;
+                document.getElementById('formation-description').value = formation.description;
+                document.getElementById('formation-duration').value = formation.duration;
+                document.getElementById('formation-category').value = formation.category;
+                document.getElementById('formation-debouches').value = formation.debouches.join('\n');
+                document.getElementById('formation-competences').value = formation.competences.join('\n');
+                document.getElementById('formation-image').value = formation.image || '';
+                form.dataset.formationId = formationId;
+            } else {
+                form.reset();
+                delete form.dataset.formationId;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function loadFormations() {
+            const container = document.getElementById('formations-grid');
+            if (!container) return;
+            
+            container.innerHTML = siteData.formations.map(formation => `
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="serif-title text-xl font-black mb-2">${formation.name}</h4>
+                            <p class="text-gray-600 mb-2">${formation.description}</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">${formation.duration}</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">${formation.category}</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="openFormationModal(${formation.id})" class="text-blue-600 hover:text-blue-800">
+                                ✏️
+                            </button>
+                            <button onclick="deleteFormation(${formation.id})" class="text-red-600 hover:text-red-800">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteFormation(formationId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette formation ?')) {
+                siteData.formations = siteData.formations.filter(f => f.id !== formationId);
+                saveData();
+                loadFormations();
+                updateCounts();
+            }
+        }
+
+        // Fonctions pour l'éditeur de texte riche
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('article-content').focus();
+        }
+        
+        function insertLink() {
+            const url = prompt('Entrez l\'URL du lien :');
+            if (url) {
+                formatText('createLink', url);
+            }
+        }
+        
+        // Fonctions pour gérer l'éditeur riche
+        function getEditorContent() {
+            return document.getElementById('article-content').innerHTML;
+        }
+        
+        function setEditorContent(content) {
+            document.getElementById('article-content').innerHTML = content;
+        }
+        
+        function clearEditorContent() {
+            setEditorContent('Écrivez votre article ici... Utilisez la toolbar pour formater le texte !');
+        }
+
+        // Variables globales pour les images uploadées
+        let uploadedImages = [];
+        
+        // Fonction pour gérer l'upload de photos
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('article-images-preview');
+            
+            for (let file of files) {
+                if (file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) { // 10MB max
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageData = {
+                            name: file.name,
+                            url: e.target.result,
+                            size: file.size,
+                            type: file.type
+                        };
+                        uploadedImages.push(imageData);
+                        updateImagePreview();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert(`Fichier ${file.name} non valide. Utilisez des images PNG, JPG, GIF de moins de 10MB.`);
+                }
+            }
+        }
+        
+        // Mettre à jour l'aperçu des images
+        function updateImagePreview() {
+            const preview = document.getElementById('article-images-preview');
+            preview.innerHTML = uploadedImages.map((img, index) => `
+                <div class="relative group">
+                    <img src="${img.url}" alt="${img.name}" class="w-full h-24 object-cover rounded-lg">
+                    <button type="button" onclick="removeImage(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg truncate">
+                        ${img.name}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Supprimer une image
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            updateImagePreview();
+        }
+        
+        // Formater le texte automatiquement (pas besoin de HTML)
+        function formatTextContent(text) {
+            if (!text) return '';
+            
+            // Diviser en paragraphes
+            const paragraphs = text.split('\n\n').filter(p => p.trim());
+            
+            return paragraphs.map(paragraph => {
+                // Vérifier si c'est une liste
+                if (paragraph.includes('•') || paragraph.includes('-') || paragraph.includes('*')) {
+                    const listItems = paragraph.split('\n').filter(item => item.trim());
+                    const listHtml = listItems.map(item => {
+                        const cleanItem = item.replace(/^[•\-\*]\s*/, '').trim();
+                        return `<li>${cleanItem}</li>`;
+                    }).join('');
+                    return `<ul class="list-disc pl-6 mb-4">${listHtml}</ul>`;
+                }
+                
+                // Vérifier si c'est un titre (lignes courtes ou en majuscules)
+                if (paragraph.length < 100 && paragraph === paragraph.toUpperCase() || paragraph.length < 50) {
+                    return `<h3 class="text-xl font-bold mb-4 mt-6">${paragraph.trim()}</h3>`;
+                }
+                
+                // Paragraphe normal
+                return `<p class="mb-4">${paragraph.trim()}</p>`;
+            }).join('');
+        }
+        function openArticleModal(articleId = null) {
+            const modal = document.getElementById('article-modal');
+            const form = document.getElementById('article-form');
+            
+            // Vider les images uploadées au début
+            uploadedImages = [];
+            updateImagePreview();
+            
+            if (articleId) {
+                const article = siteData.articles.find(a => a.id === articleId);
+                document.getElementById('article-title').value = article.title;
+                document.getElementById('article-date').value = article.date;
+                document.getElementById('article-author').value = article.author;
+                // Charger les images existantes
+                if (article.images && article.images.length > 0) {
+                    uploadedImages = article.images.map((img, index) => ({
+                        name: `Image ${index + 1}`,
+                        url: img,
+                        size: 0,
+                        type: 'image'
+                    }));
+                    updateImagePreview();
+                }
+                // Charger le contenu existant dans l'éditeur
+                setEditorContent(article.content);
+                form.dataset.articleId = articleId;
+            } else {
+                form.reset();
+                clearEditorContent(); // Vider l'éditeur pour un nouvel article
+                delete form.dataset.articleId;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function editArticle(id) {
+            openArticleModal(id);
+        }
+
+        function deleteArticle(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+                siteData.articles = siteData.articles.filter(a => a.id !== id);
+                saveData();
+                loadArticles();
+                updateCounts();
+            }
+        }
+
+        function toggleArticleStatus(id) {
+            const article = siteData.articles.find(a => a.id === id);
+            article.status = article.status === 'published' ? 'draft' : 'published';
+            saveData();
+            loadArticles();
+        }
+
+        function editFormation(id) {
+            alert('Éditer formation: ' + id);
+        }
+
+        function deleteFormation(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette formation ?')) {
+                siteData.formations = siteData.formations.filter(f => f.id !== id);
+                saveData();
+                loadFormations();
+                updateCounts();
+            }
+        }
+
+        function editActualite(id) {
+            alert('Éditer actualité: ' + id);
+        }
+
+        function deleteActualite(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette actualité ?')) {
+                siteData.actualites = siteData.actualites.filter(a => a.id !== id);
+                saveData();
+                loadActualites();
+                updateCounts();
+            }
+        }
+
+        function updateStats() {
+            siteData.stats.students = document.getElementById('stat-students-input').value || siteData.stats.students;
+            siteData.stats.success = document.getElementById('stat-success-input').value + '%' || siteData.stats.success;
+            siteData.stats.formations = document.getElementById('stat-formations-input').value || siteData.stats.formations;
+            siteData.stats.years = document.getElementById('stat-years-input').value + '+' || siteData.stats.years;
+            
+            saveData();
+            loadStats();
+        }
+
+        function saveData() {
+            localStorage.setItem('ltg_site_data', JSON.stringify(siteData));
+        }
+
+        function saveAllData() {
+            // Save all form data
+            siteData.general.name = document.getElementById('site-name').value;
+            siteData.general.slogan = document.getElementById('site-slogan').value;
+            siteData.general.description = document.getElementById('site-description').value;
+            siteData.general.keywords = document.getElementById('site-keywords').value;
+            
+            siteData.contact.email = document.getElementById('contact-email').value;
+            siteData.contact.phone = document.getElementById('contact-phone').value;
+            siteData.contact.address = document.getElementById('contact-address').value;
+            siteData.contact.director = document.getElementById('contact-director').value;
+            siteData.contact.social.facebook = document.getElementById('social-facebook').value;
+            siteData.contact.social.twitter = document.getElementById('social-twitter').value;
+            siteData.contact.social.linkedin = document.getElementById('social-linkedin').value;
+            
+            siteData.appearance.primaryColor = document.getElementById('primary-color').value;
+            siteData.appearance.secondaryColor = document.getElementById('secondary-color').value;
+            siteData.appearance.titleFont = document.getElementById('title-font').value;
+            siteData.appearance.siteStyle = document.getElementById('site-style').value;
+            siteData.appearance.logo = document.getElementById('site-logo').value;
+            
+            siteData.seo.title = document.getElementById('seo-title').value;
+            siteData.seo.description = document.getElementById('seo-description').value;
+            siteData.seo.canonical = document.getElementById('seo-canonical').value;
+            siteData.seo.googleAnalytics = document.getElementById('google-analytics').value;
+            
+            saveData();
+            alert('✅ Toutes les données ont été sauvegardées avec succès !');
+        }
+
+        function exportAllData() {
+            const dataStr = JSON.stringify(siteData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = `ltg-site-data-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function importArticles() {
+            document.getElementById('import-file').click();
+        }
+
+        function syncToSite() {
+            // Create a sync event that the main site can listen to
+            localStorage.setItem('ltg_admin_sync', JSON.stringify(siteData));
+            localStorage.setItem('ltg_sync_timestamp', Date.now());
+            alert('🔄 Données synchronisées ! Le site sera mis à jour automatiquement.');
+        }
+
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Form Submissions
+        document.getElementById('article-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                title: document.getElementById('article-title').value,
+                date: document.getElementById('article-date').value,
+                author: document.getElementById('article-author').value,
+                images: uploadedImages.map(img => img.url), // Utiliser les images uploadées
+                content: getEditorContent(), // Utiliser le contenu de l'éditeur riche
+                status: 'published'
+            };
+            
+            if (e.target.dataset.articleId) {
+                const id = parseInt(e.target.dataset.articleId);
+                const index = siteData.articles.findIndex(a => a.id === id);
+                siteData.articles[index] = { ...formData, id };
+            } else {
+                formData.id = Date.now();
+                siteData.articles.push(formData);
+            }
+            
+            // Vider les images uploadées après sauvegarde
+            uploadedImages = [];
+            updateImagePreview();
+            
+            saveData();
+            loadArticles();
+            updateCounts();
+            closeModal('article-modal');
+        });
+
+        // Formation form submission
+        document.getElementById('formation-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('formation-name').value,
+                description: document.getElementById('formation-description').value,
+                duration: document.getElementById('formation-duration').value,
+                category: document.getElementById('formation-category').value,
+                debouches: document.getElementById('formation-debouches').value.split('\n').filter(d => d.trim()),
+                competences: document.getElementById('formation-competences').value.split('\n').filter(c => c.trim()),
+                image: document.getElementById('formation-image').value || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600'
+            };
+            
+            if (e.target.dataset.formationId) {
+                const id = parseInt(e.target.dataset.formationId);
+                const index = siteData.formations.findIndex(f => f.id === id);
+                siteData.formations[index] = { ...formData, id };
+            } else {
+                formData.id = Date.now();
+                siteData.formations.push(formData);
+            }
+            
+            saveData();
+            loadFormations();
+            updateCounts();
+            closeModal('formation-modal');
+        });
+
+        // File import handler
+        document.getElementById('import-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    if (importedData.articles) {
+                        siteData.articles = importedData.articles;
+                        saveData();
+                        loadArticles();
+                        updateCounts();
+                        alert('✅ Articles importés avec succès !');
+                    }
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'importation : ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Authentication
+        function checkAuth() {
+            const password = prompt('🔐 Mot de passe administrateur :');
+            if (password !== 'admin123') {
+                alert('❌ Mot de passe incorrect');
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (checkAuth()) {
+                updateCounts();
+                loadTabContent('general');
+            }
+        });
+    </script>
+</body>
+</html>

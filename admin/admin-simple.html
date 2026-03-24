@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Simple Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">🧪 Admin Simple - Test Articles</h1>
+        
+        <!-- Formulaire simple -->
+        <div class="bg-white rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Créer un Article</h2>
+            <form id="simple-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Titre</label>
+                    <input type="text" id="title" required class="w-full border px-3 py-2 rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Contenu</label>
+                    <textarea id="content" required class="w-full border px-3 py-2 rounded" rows="4"></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                    Créer l'article
+                </button>
+            </form>
+        </div>
+        
+        <!-- Liste des articles -->
+        <div class="bg-white rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Articles existants</h2>
+            <div id="articles-list"></div>
+        </div>
+        
+        <!-- Debug info -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
+            <h3 class="font-bold mb-2">🔍 Debug Info</h3>
+            <div id="debug-info"></div>
+        </div>
+    </div>
+
+    <script>
+        // Données de test
+        let articles = [];
+        
+        // Charger depuis localStorage au démarrage
+        function loadArticles() {
+            try {
+                const stored = localStorage.getItem('ltg_articles');
+                if (stored) {
+                    articles = JSON.parse(stored);
+                    console.log('📥 Articles chargés:', articles.length);
+                } else {
+                    console.log('📭 Aucun article dans localStorage');
+                }
+            } catch (error) {
+                console.error('❌ Erreur chargement:', error);
+            }
+            displayArticles();
+            updateDebug();
+        }
+        
+        // Sauvegarder dans localStorage
+        function saveArticles() {
+            try {
+                localStorage.setItem('ltg_articles', JSON.stringify(articles));
+                console.log('💾 Articles sauvegardés:', articles.length);
+                return true;
+            } catch (error) {
+                console.error('❌ Erreur sauvegarde:', error);
+                return false;
+            }
+        }
+        
+        // Afficher les articles
+        function displayArticles() {
+            const container = document.getElementById('articles-list');
+            
+            if (articles.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Aucun article pour le moment</p>';
+                return;
+            }
+            
+            container.innerHTML = articles.map((article, index) => `
+                <div class="border rounded-lg p-4 mb-4">
+                    <h3 class="font-bold text-lg">${article.title}</h3>
+                    <p class="text-gray-600 mb-2">${article.content}</p>
+                    <div class="flex gap-2">
+                        <button onclick="editArticle(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">
+                            Modifier
+                        </button>
+                        <button onclick="deleteArticle(${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">
+                            Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Créer/Mettre à jour un article
+        document.getElementById('simple-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            
+            const article = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                createdAt: new Date().toISOString()
+            };
+            
+            articles.push(article);
+            
+            if (saveArticles()) {
+                displayArticles();
+                updateDebug();
+                this.reset();
+                alert('✅ Article créé avec succès !');
+            } else {
+                alert('❌ Erreur lors de la sauvegarde');
+            }
+        });
+        
+        // Modifier un article
+        function editArticle(index) {
+            const article = articles[index];
+            document.getElementById('title').value = article.title;
+            document.getElementById('content').value = article.content;
+            
+            // Supprimer l'ancien
+            articles.splice(index, 1);
+            saveArticles();
+            displayArticles();
+            updateDebug();
+        }
+        
+        // Supprimer un article
+        function deleteArticle(index) {
+            if (confirm('Supprimer cet article ?')) {
+                articles.splice(index, 1);
+                if (saveArticles()) {
+                    displayArticles();
+                    updateDebug();
+                    alert('✅ Article supprimé');
+                } else {
+                    alert('❌ Erreur lors de la suppression');
+                }
+            }
+        }
+        
+        // Mettre à jour les infos de debug
+        function updateDebug() {
+            const debug = document.getElementById('debug-info');
+            debug.innerHTML = `
+                <div class="text-sm space-y-1">
+                    <div><strong>Articles en mémoire:</strong> ${articles.length}</div>
+                    <div><strong>localStorage disponible:</strong> ${typeof(Storage) !== "undefined" ? "Oui" : "Non"}</div>
+                    <div><strong>Dernière sauvegarde:</strong> ${localStorage.getItem('ltg_articles') ? 'Oui' : 'Non'}</div>
+                    <div><strong>Taille localStorage:</strong> ${localStorage.getItem('ltg_articles') ? localStorage.getItem('ltg_articles').length + ' chars' : '0 chars'}</div>
+                </div>
+            `;
+        }
+        
+        // Test de synchronisation
+        function testSync() {
+            // Créer un événement de test
+            localStorage.setItem('test_sync', Date.now().toString());
+            console.log('🔄 Test sync envoyé');
+        }
+        
+        // Initialiser au chargement
+        window.addEventListener('load', () => {
+            console.log('🚀 Page chargée, initialisation...');
+            loadArticles();
+            
+            // Tester la synchronisation toutes les 2 secondes
+            setInterval(() => {
+                const testSync = localStorage.getItem('test_sync');
+                if (testSync) {
+                    console.log('📡 Signal de sync reçu!');
+                    localStorage.removeItem('test_sync');
+                    loadArticles(); // Recharger les articles
+                }
+            }, 2000);
+        });
+        
+        // Écouter les changements d'autres onglets
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'ltg_articles') {
+                console.log('🔄 Changement détecté depuis un autre onglet');
+                loadArticles();
+            }
+        });
+    </script>
+</body>
+</html>
